@@ -1,0 +1,325 @@
+<?xml version="1.0"?>
+
+<project name="KeyManagement" default="compile">
+
+	<property name="src" value="src" />
+	<property name="lib" value="lib" />
+	<property name="build" value="bin" />
+	<property name="tempdir" value="temp" />
+	<property name="tempdir" value="temp1" />
+	<property name="generateCertificateRequest" value="GenerateCertificateRequest.jar" />
+	<property name="listKeyStoreEntries" value="ListKeyStoreEntries.jar" />
+	<property name="importCertificate" value="ImportCertificate.jar" />
+	<property name="importSecretKey" value="ImportSecretKey.jar" />
+	<property name="exportSecretKey" value="ExportSecretKey.jar" />
+	<property name="exportCertificates" value="ExportCertificates.jar" />
+	<property name="deleteKeyStoreEntry" value="DeleteKeyStoreEntry.jar" />
+	
+
+
+
+	<target name="init">
+	</target>
+
+	<target name="compile" depends="init">
+		<mkdir dir="${build}"/>
+		<javac srcdir="${src}" destdir="${build}" debug="off" verbose="off" target="1.5" source="1.5">
+			<classpath>
+				<fileset dir="${lib}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+	<target name="ImportSecretKeyJar" depends="compile">
+		<!-- Call to SVN executable
+		<exec outputproperty="version" executable="svnversion">
+			<arg value="-n" />
+		</exec>
+		-->
+
+		<jar destfile="${importSecretKey}">
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+			<fileset dir="${build}">
+				<include name="com/safenetinc/Common.class" />
+				<include name="com/safenetinc/viewpin/utils/CommonUtils.class" />
+				<include name="com/safenetinc/viewpin/utils/WrapUnwrap.class" />
+				<include name="com/safenetinc/viewpin/utils/ImportSecretKey.class" />
+				
+			</fileset>
+
+			<zipgroupfileset dir="${lib}" excludes="LunaJCASP.jar,LunaJCESP.jar" />
+		</jar>
+		<mkdir dir="${tempdir}" />
+		<unjar src="${importSecretKey}" dest="${tempdir}">
+			<patternset>
+				<include name="**" />
+				<exclude name="META-INF/*.SF" />
+				<exclude name="META-INF/*.DSA" />
+				<exclude name="META-INF/*.RSA" />
+			</patternset>
+		</unjar>
+		<delete file="${importSecretKey}" />
+		<jar destfile="${importSecretKey}">
+			<fileset dir="${tempdir}" />
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+		</jar>
+		<delete dir="${tempdir}" />
+	</target>
+	
+	<target name="ExportSecretKeyJar" depends="compile">
+			<!-- Call to SVN executable
+			<exec outputproperty="version" executable="svnversion">
+				<arg value="-n" />
+			</exec>
+			-->
+
+			<jar destfile="${exportSecretKey}">
+				<manifest>
+					<attribute name="Version" value="${version}" />
+				</manifest>
+				<fileset dir="${build}">
+					<include name="com/safenetinc/Common.class" />
+					<include name="com/safenetinc/viewpin/utils/CommonUtils.class" />
+					<include name="com/safenetinc/viewpin/utils/WrapUnwrap.class" />
+					<include name="com/safenetinc/viewpin/utils/ExportSecretKey.class" />
+					
+				</fileset>
+
+				<zipgroupfileset dir="${lib}" excludes="LunaJCASP.jar,LunaJCESP.jar" />
+			</jar>
+			<mkdir dir="${tempdir}" />
+			<unjar src="${exportSecretKey}" dest="${tempdir}">
+				<patternset>
+					<include name="**" />
+					<exclude name="META-INF/*.SF" />
+					<exclude name="META-INF/*.DSA" />
+					<exclude name="META-INF/*.RSA" />
+				</patternset>
+			</unjar>
+			<delete file="${exportSecretKey}" />
+			<jar destfile="${exportSecretKey}">
+				<fileset dir="${tempdir}" />
+				<manifest>
+					<attribute name="Version" value="${version}" />
+				</manifest>
+			</jar>
+			<delete dir="${tempdir}" />
+		</target>
+	
+	<target name="GenerateCertificateRequestJar" depends="compile">
+		<!-- Call to SVN executable
+		<exec outputproperty="version" executable="svnversion">
+			<arg value="-n" />
+		</exec>
+		-->
+
+		<jar destfile="${generateCertificateRequest}">
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+			<fileset dir="${build}">
+				<include name="com/safenetinc/viewpin/utils/CommonUtils.class" />
+				<include name="com/safenetinc/Common.class" />
+				<include name="com/safenetinc/viewpin/utils/GenerateCertificateRequest.class" />
+			</fileset>
+			<zipgroupfileset dir="${lib}" excludes="LunaJCASP.jar,LunaJCESP.jar" />
+		</jar>
+		<mkdir dir="${tempdir}" />
+		<unjar src="${generateCertificateRequest}" dest="${tempdir}">
+			<patternset>
+				<include name="**" />
+				<exclude name="META-INF/*.SF" />
+				<exclude name="META-INF/*.DSA" />
+				<exclude name="META-INF/*.RSA" />
+			</patternset>
+		</unjar>
+		<delete file="${generateCertificateRequest}" />
+		<jar destfile="${generateCertificateRequest}">
+			<fileset dir="${tempdir}" />
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+		</jar>
+		<delete dir="${tempdir}" />
+	</target>
+
+	<target name="ListKeyStoreEntriesJar" depends="compile">
+		<!-- Call to SVN executable
+		<exec outputproperty="version" executable="svnversion">
+			<arg value="-n" />
+		</exec>
+		-->
+
+		<jar destfile="${listKeyStoreEntries}">
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+			<fileset dir="${build}">
+				<include name="com/safenetinc/viewpin/utils/CommonUtils.class" />
+				<include name="com/safenetinc/Common.class" />
+				<include name="com/safenetinc/viewpin/utils/ListKeyStoreEntries.class" />
+			</fileset>
+
+			<zipgroupfileset dir="${lib}" excludes="LunaJCASP.jar,LunaJCESP.jar" />
+		</jar>
+		<mkdir dir="${tempdir}" />
+		<unjar src="${listKeyStoreEntries}" dest="${tempdir}">
+			<patternset>
+				<include name="**" />
+				<exclude name="META-INF/*.SF" />
+				<exclude name="META-INF/*.DSA" />
+				<exclude name="META-INF/*.RSA" />
+			</patternset>
+		</unjar>
+		<delete file="${listKeyStoreEntries}" />
+		<jar destfile="${listKeyStoreEntries}">
+			<fileset dir="${tempdir}" />
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+		</jar>
+		<delete dir="${tempdir}" />
+	</target>
+
+	<target name="ImportCertificateJar" depends="compile">
+		<!-- Call to SVN executable
+		<exec outputproperty="version" executable="svnversion">
+			<arg value="-n" />
+		</exec>
+		-->
+		<jar destfile="${importCertificate}">
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+			<fileset dir="${build}">
+				<include name="com/safenetinc/viewpin/utils/CommonUtils.class" />
+				<include name="com/safenetinc/Common.class" />
+				<include name="com/safenetinc/viewpin/utils/ImportCertificate.class" />
+			</fileset>
+
+			<zipgroupfileset dir="${lib}" excludes="LunaJCASP.jar,LunaJCESP.jar" />
+		</jar>
+		<mkdir dir="${tempdir}" />
+		<unjar src="${importCertificate}" dest="${tempdir}">
+			<patternset>
+				<include name="**" />
+				<exclude name="META-INF/*.SF" />
+				<exclude name="META-INF/*.DSA" />
+				<exclude name="META-INF/*.RSA" />
+			</patternset>
+		</unjar>
+		<delete file="${importCertificate}" />
+		<jar destfile="${importCertificate}">
+			<fileset dir="${tempdir}" />
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+		</jar>
+		<delete dir="${tempdir}" />
+	</target>
+
+	<target name="ExportCertificatesJar" depends="compile">
+		<!-- Call to SVN executable
+		<exec outputproperty="version" executable="svnversion">
+			<arg value="-n" />
+		</exec>
+		-->
+
+		<jar destfile="${exportCertificates}">
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+			<fileset dir="${build}">
+				<include name="com/safenetinc/viewpin/utils/CommonUtils.class" />
+				<include name="com/safenetinc/Common.class" />
+				<include name="com/safenetinc/viewpin/utils/ExportCertificates.class" />
+			</fileset>
+
+			<zipgroupfileset dir="${lib}" excludes="LunaJCASP.jar,LunaJCESP.jar" />
+		</jar>
+		<mkdir dir="${tempdir}" />
+		<unjar src="${exportCertificates}" dest="${tempdir}">
+			<patternset>
+				<include name="**" />
+				<exclude name="META-INF/*.SF" />
+				<exclude name="META-INF/*.DSA" />
+				<exclude name="META-INF/*.RSA" />
+			</patternset>
+		</unjar>
+		<delete file="${exportCertificates}" />
+		<jar destfile="${exportCertificates}">
+			<fileset dir="${tempdir}" />
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+		</jar>
+		<delete dir="${tempdir}" />
+	</target>
+
+	<target name="DeleteKeyStoreEntryJar" depends="compile">
+		<!-- Call to SVN executable
+		<exec outputproperty="version" executable="svnversion">
+			<arg value="-n" />
+		</exec>
+		-->
+
+		<jar destfile="${deleteKeyStoreEntry}">
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+			<fileset dir="${build}">
+				<include name="com/safenetinc/viewpin/utils/CommonUtils.class" />
+				<include name="com/safenetinc/Common.class" />
+				<include name="com/safenetinc/viewpin/utils/DeleteKeyStoreEntry.class" />
+			</fileset>
+
+			<zipgroupfileset dir="${lib}" excludes="LunaJCASP.jar,LunaJCESP.jar" />
+		</jar>
+		<mkdir dir="${tempdir}" />
+		<unjar src="${deleteKeyStoreEntry}" dest="${tempdir}">
+			<patternset>
+				<include name="**" />
+				<exclude name="META-INF/*.SF" />
+				<exclude name="META-INF/*.DSA" />
+				<exclude name="META-INF/*.RSA" />
+			</patternset>
+		</unjar>
+		<delete file="${deleteKeyStoreEntry}" />
+		<jar destfile="${deleteKeyStoreEntry}">
+			<fileset dir="${tempdir}" />
+			<manifest>
+				<attribute name="Version" value="${version}" />
+			</manifest>
+		</jar>
+		<delete dir="${tempdir}" />
+	</target>
+
+	
+
+	
+
+	
+
+	
+	<target name="clean">
+		<mkdir dir="${build}"/>
+		<delete includeemptydirs="true">
+			<fileset dir="${build}" includes="**/*" />
+		</delete>
+		<delete file="${deleteKeyStoreEntry}" />
+		<delete file="${exportSecretKey}" />
+		<delete file="${importSecretKey}" />
+		<delete file="${exportCertificates}" />
+		<delete file="${listKeyStoreEntries}" />
+		<delete file="${importCertificate}" />
+		<delete file="${generateCertificateRequest}" />
+	</target>
+
+	<target name="buildcomplete" depends="ImportSecretKeyJar,ExportSecretKeyJar,DeleteKeyStoreEntryJar,ExportCertificatesJar,ImportCertificateJar,ListKeyStoreEntriesJar,GenerateCertificateRequestJar" />
+
+</project>
